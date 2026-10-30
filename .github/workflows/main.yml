@@ -8,9 +8,9 @@ jobs:
     - name: Obtener codigo
       uses: actions/checkout@v4
 
-    - name: Instalar VitaSDK Oficial (Linux QuickInstall)
+    - name: Instalar VitaSDK Oficial
       run: |
-        sudo apt-get update && sudo apt-get install -y make git zip
+        sudo apt-get update && sudo apt-get install -y make git zip bzip2 curl
         mkdir -p $GITHUB_WORKSPACE/vitasdk
         curl -L https://github.com | tar xj -C $GITHUB_WORKSPACE/vitasdk --strip-components=1
         echo "VITASDK=$GITHUB_WORKSPACE/vitasdk" >> $GITHUB_ENV
