@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Obtener codigo
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Instalar VitaSDK oficial
       run: |
@@ -28,7 +28,7 @@ jobs:
         zip -r ZombieAttackVita.vpk eboot.bin param.sfo
 
     - name: Subir archivo para descargar
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: Bubble-PSVita
         path: ZombieAttackVita.vpk
