@@ -1,0 +1,34 @@
+name: Compilar Port PS Vita
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Obtener codigo
+      uses: actions/checkout@v3
+
+    - name: Instalar VitaSDK oficial
+      run: |
+        git clone https://github.com
+        cd vdpm
+        ./bootstrap-vitasdk.sh
+        echo "VITASDK=$GITHUB_WORKSPACE/vdpm/vitasdk" >> $GITHUB_ENV
+        echo "$GITHUB_WORKSPACE/vdpm/vitasdk/bin" >> $GITHUB_PATH
+
+    - name: Compilar ejecutable binario
+      run: |
+        arm-vita-eabi-g++ main.cpp -o main.elf -lSceCtrl_stub -lSceDisplay_stub
+        vita-elf-create main.elf main.velf
+        vita-make-fself main.velf eboot.bin
+        vita-mksfoex -s TITLE_ID=ZOMBIE001 "Zombie Attack Port" param.sfo
+
+    - name: Empaquetar VPK final
+      run: |
+        zip -r ZombieAttackVita.vpk eboot.bin param.sfo
+
+    - name: Subir archivo para descargar
+      uses: actions/upload-artifact@v3
+      with:
+        name: Bubble-PSVita
+        path: ZombieAttackVita.vpk
