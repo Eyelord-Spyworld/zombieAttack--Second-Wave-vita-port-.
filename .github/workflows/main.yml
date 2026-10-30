@@ -4,12 +4,13 @@ on: [push, workflow_dispatch]
 jobs:
   build:
     runs-on: ubuntu-latest
+    container: vitasdk/vitasdk:latest
     steps:
-    - name: Obtener codigo
+    - name: Obtener codigo del repositorio
       uses: actions/checkout@v4
 
-    - name: Instalar VitaSDK Oficial
-      uses: vitasdk/vitasdk-action@v1
+    - name: Instalar herramienta zip de respaldo
+      run: apk add --no-cache zip
 
     - name: Compilar ejecutable binario para PS Vita
       run: |
