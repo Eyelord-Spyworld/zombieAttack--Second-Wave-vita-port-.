@@ -9,16 +9,10 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Instalar VitaSDK Oficial
-      run: |
-        sudo apt-get update && sudo apt-get install -y make git zip bzip2 curl
-        mkdir -p $GITHUB_WORKSPACE/vitasdk
-        curl -L https://github.com | tar xj -C $GITHUB_WORKSPACE/vitasdk --strip-components=1
-        echo "VITASDK=$GITHUB_WORKSPACE/vitasdk" >> $GITHUB_ENV
-        echo "$GITHUB_WORKSPACE/vitasdk/bin" >> $GITHUB_PATH
+      uses: vitasdk/vitasdk-action@v1
 
     - name: Compilar ejecutable binario para PS Vita
       run: |
-        export PATH="$GITHUB_WORKSPACE/vitasdk/bin:$PATH"
         arm-vita-eabi-g++ main.cpp -o main.elf -lSceCtrl_stub -lSceDisplay_stub
         vita-elf-create main.elf main.velf
         vita-make-fself main.velf eboot.bin
